@@ -1,0 +1,36 @@
+Testing Agent API at http://localhost:3000/api/agent...
+Response Status: 200
+Response Data: {
+  "type": "restaurants",
+  "city": "Bangalore",
+  "results": [
+    {
+      "id": "r1",
+      "name": "MTR (Mavalli Tiffin Room)",
+      "rating": 4.6,
+      "cuisine": "South Indian",
+      "distance": "1.2 km",
+      "lat": 12.9507,
+      "lng": 77.5848
+    },
+    {
+      "id": "r2",
+      "name": "Toit Brewpub",
+      "rating": 4.7,
+      "cuisine": "Continental",
+      "distance": "3.5 km",
+      "lat": 12.9793,
+      "lng": 77.6406
+    },
+    {
+      "id": "r3",
+      "name": "Nagarjuna",
+      "rating": 4.5,
+      "cuisine": "Andhra Style",
+      "distance": "2.0 km",
+      "lat": 12.9737,
+      "lng": 77.6105
+    }
+  ],
+  "message": "Here are some top-rated dining spots near you:"
+}

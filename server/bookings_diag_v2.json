@@ -1,0 +1,92 @@
+[
+  {
+    "id": "6996c2dca90ba009607ad31b",
+    "status": "COMPLETED",
+    "date": "2026-02-20T00:00:00.000Z",
+    "time": "16:00",
+    "userId": "699577c6754e733bf19e87c6",
+    "guideId": "69957feee8c683d2a0ff1346",
+    "createdAt": "2026-02-19T07:59:24.497Z"
+  },
+  {
+    "id": "6996c1a8b8346793b21c3d2b",
+    "status": "COMPLETED",
+    "date": "2026-02-20T00:00:00.000Z",
+    "time": "19:00",
+    "userId": "699577c6754e733bf19e87c6",
+    "guideId": "69957feee8c683d2a0ff1346",
+    "createdAt": "2026-02-19T07:54:16.321Z"
+  },
+  {
+    "id": "6996c177b8346793b21c3cd1",
+    "status": "COMPLETED",
+    "date": "2026-03-01T00:00:00.000Z",
+    "time": "15:00",
+    "userId": "699577c6754e733bf19e87c6",
+    "guideId": "69957feee8c683d2a0ff1346",
+    "createdAt": "2026-02-19T07:53:27.610Z"
+  },
+  {
+    "id": "6996c083b8346793b21c3b1d",
+    "status": "COMPLETED",
+    "date": "2026-02-28T00:00:00.000Z",
+    "time": "11:00",
+    "userId": "69957826754e733bf19e87de",
+    "guideId": "69957feee8c683d2a0ff1346",
+    "createdAt": "2026-02-19T07:49:23.376Z"
+  },
+  {
+    "id": "6996bed3a1877445466845ca",
+    "status": "COMPLETED",
+    "date": "2026-03-07T00:00:00.000Z",
+    "time": "20:00",
+    "userId": "699577c6754e733bf19e87c6",
+    "guideId": "69957feee8c683d2a0ff1346",
+    "createdAt": "2026-02-19T07:42:11.865Z"
+  },
+  {
+    "id": "6996bd1238449d2de76401de",
+    "status": "COMPLETED",
+    "date": "2026-02-20T00:00:00.000Z",
+    "time": "15:00",
+    "userId": "699577c6754e733bf19e87c6",
+    "guideId": "69957feee8c683d2a0ff1346",
+    "createdAt": "2026-02-19T07:34:42.083Z"
+  },
+  {
+    "id": "6995e9c3bac36ec470d14241",
+    "status": "COMPLETED",
+    "date": "2026-02-19T00:00:00.000Z",
+    "time": "14:00",
+    "userId": "699574a9754e733bf19e86c9",
+    "guideId": "6995e9c3bac36ec470d1423d",
+    "createdAt": "2026-02-18T16:33:07.749Z"
+  },
+  {
+    "id": "6995e5a4d9764b9e6fd8d095",
+    "status": "COMPLETED",
+    "date": "2026-02-20T00:00:00.000Z",
+    "time": "10:00",
+    "userId": "699577c6754e733bf19e87c6",
+    "guideId": "69957feee8c683d2a0ff1346",
+    "createdAt": "2026-02-18T16:15:32.220Z"
+  },
+  {
+    "id": "699594b015a3abd0cc9f5e85",
+    "status": "COMPLETED",
+    "date": "2026-02-28T00:00:00.000Z",
+    "time": "10:00",
+    "userId": "699577c6754e733bf19e87c6",
+    "guideId": "69957feee8c683d2a0ff1346",
+    "createdAt": "2026-02-18T10:30:08.610Z"
+  },
+  {
+    "id": "699593c16748ed1b653f1612",
+    "status": "COMPLETED",
+    "date": "2026-02-27T00:00:00.000Z",
+    "time": "15:00",
+    "userId": "699577c6754e733bf19e87c6",
+    "guideId": "69957feee8c683d2a0ff1346",
+    "createdAt": "2026-02-18T10:26:09.504Z"
+  }
+]
