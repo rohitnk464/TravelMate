@@ -82,7 +82,7 @@ const Destinations = () => {
 
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
                     {destinations.map((dest, index) => (
-                        <Link key={dest._id || dest.id || index} href={`/dashboard?location=${dest.name}`}>
+                        <Link key={dest._id || dest.id || index} href={`/dashboard?location=${dest.location || dest.name}`}>
                             <motion.div
                                 initial={{ opacity: 0, y: 20 }}
                                 whileInView={{ opacity: 1, y: 0 }}

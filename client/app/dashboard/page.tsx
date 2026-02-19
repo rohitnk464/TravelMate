@@ -26,6 +26,17 @@ function DashboardContent() {
 
             // Try to resolve coordinates if not already set
             const resolveCoords = async () => {
+                // Check if location is a coordinate pair (lat, lon)
+                const coordMatch = location.match(/^(-?\d+(\.\d+)?),\s*(-?\d+(\.\d+)?)$/);
+                if (coordMatch) {
+                    const lat = parseFloat(coordMatch[1]);
+                    const lon = parseFloat(coordMatch[3]);
+                    if (!isNaN(lat) && !isNaN(lon) && setSelectedCityCoordinates) {
+                        setSelectedCityCoordinates([lat, lon]);
+                        return;
+                    }
+                }
+
                 try {
                     const response = await fetch(`${API_BASE_URL}/api/openmap/geocode?city=${encodeURIComponent(location)}`);
                     const data = await response.json();
