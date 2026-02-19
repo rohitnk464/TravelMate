@@ -14,14 +14,20 @@ router.get('/', async (req, res) => {
         const results = [];
 
         for (const acc of accounts) {
-            const existing = await User.findOne({ email: acc.email });
-            if (existing) {
-                results.push(`Skipped (Already exists): ${acc.email}`);
-                continue;
+            let user = await User.findOne({ email: acc.email });
+
+            if (user) {
+                // Update existing user (fixes corrupted passwords)
+                user.password = acc.password; // Plaintext, will be hashed by pre-save hook
+                user.role = acc.role;
+                user.isVerified = acc.isVerified;
+                await user.save();
+                results.push(`Updated: ${acc.email}`);
+            } else {
+                // Create new user
+                await User.create(acc); // Plaintext, will be hashed by pre-save hook
+                results.push(`Created: ${acc.email}`);
             }
-            const hashed = await bcrypt.hash(acc.password, 10);
-            await User.create({ ...acc, password: hashed });
-            results.push(`Created: ${acc.email}`);
         }
 
         res.json({
