@@ -85,14 +85,20 @@ export default function GuidesPage() {
     const durationOptions = [
         { label: "1 Hour", val: 1 },
         { label: "2 Hours", val: 2 },
-        { label: "Half Day (4h)", val: 4 },
-        { label: "Full Day (8h)", val: 8 }
+        { label: "Half Day (4 Hours)", val: 4 },
+        { label: "Full Day (8 Hours)", val: 8 }
     ];
 
     const calculatePrice = () => {
         if (!selectedGuide) return 0;
         const hours = durationOptions.find(d => d.label === duration)?.val || 1;
-        const rate = selectedGuide.hourlyRate || parseInt(selectedGuide.price?.replace(/[^0-9]/g, '') || "40");
+        // Handle various price formats (number, string with currency, etc)
+        let rate = 40; // Default
+        if (typeof selectedGuide.hourlyRate === 'number') rate = selectedGuide.hourlyRate;
+        else if (selectedGuide.price) {
+            const parsed = parseInt(selectedGuide.price.toString().replace(/[^0-9]/g, ''));
+            if (!isNaN(parsed)) rate = parsed;
+        }
         return rate * hours;
     };
 
@@ -110,6 +116,9 @@ export default function GuidesPage() {
         setIsSubmitting(true);
 
         try {
+            // Ensure city is present
+            const city = selectedGuide.location ? selectedGuide.location.split(',')[0].trim() : "Unknown City";
+
             const res = await fetch(`${API_BASE_URL}/api/bookings`, {
                 method: 'POST',
                 headers: {
@@ -124,14 +133,13 @@ export default function GuidesPage() {
                     duration,
                     message,
                     totalPrice: calculatePrice(),
-                    city: selectedGuide.location // Add city from guide location
+                    city: city
                 })
             });
 
             const data = await res.json();
 
             if (!res.ok) {
-                // If conflict, show specific error
                 if (res.status === 409) {
                     throw new Error("This guide is already booked for this time slot. Please choose another time.");
                 }
@@ -141,7 +149,8 @@ export default function GuidesPage() {
             setBookingId(data._id);
             setBookingStep("payment");
         } catch (err: any) {
-            setError(err.message);
+            console.error("Booking failed:", err);
+            setError(err.message || "Failed to create booking");
         } finally {
             setIsSubmitting(false);
         }
@@ -168,7 +177,9 @@ export default function GuidesPage() {
             if (!res.ok) throw new Error(data.message || "Payment failed");
 
             setBookingStep("success");
+            // Optional: Refresh bookings or guide availability here
         } catch (err: any) {
+            console.error("Payment failed:", err);
             setError(err.message);
         } finally {
             setIsSubmitting(false);
@@ -180,6 +191,7 @@ export default function GuidesPage() {
 
     return (
         <main className="min-h-screen bg-background text-foreground">
+            {/* ... header code ... */}
             <Navbar />
 
             {/* Header */}
@@ -297,7 +309,7 @@ export default function GuidesPage() {
                             initial={{ opacity: 0, scale: 0.95 }}
                             animate={{ opacity: 1, scale: 1 }}
                             exit={{ opacity: 0, scale: 0.95 }}
-                            className="bg-[#111] border border-white/10 rounded-3xl w-full max-w-md overflow-hidden shadow-2xl relative"
+                            className="bg-[#111] border border-white/10 rounded-3xl w-full max-w-md max-h-[90vh] overflow-y-auto shadow-2xl relative scrollbar-hide"
                         >
                             <button
                                 onClick={() => setSelectedGuide(null)}
