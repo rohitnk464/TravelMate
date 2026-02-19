@@ -51,7 +51,7 @@ export default function BookingChat({ bookingId, recipientName, onClose }: Booki
         fetchHistory();
 
         // Initialize Socket
-        const newSocket = io("http://localhost:5000");
+        const newSocket = io(API_BASE_URL);
         setSocket(newSocket);
 
         newSocket.emit("join_chat", bookingId);

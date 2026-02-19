@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, Shield, ShieldCheck, Globe, LogOut, LayoutDashboard, MessageSquare, Bell } from "lucide-react";
 import { io } from "socket.io-client";
+import { API_BASE_URL } from "@/lib/config";
 import { cn } from "@/lib/utils";
 import { useJourney } from "@/context/JourneyContext";
 import { usePathname, useRouter } from "next/navigation";
@@ -32,36 +33,42 @@ const Navbar = () => {
 
     useEffect(() => {
         if (isAuthenticated && token && user) {
-            const fetchActiveBookings = async () => {
+            const fetchBookings = async () => {
                 try {
-                    let fetchUrl = `http://localhost:5000/api/bookings/user/${user?.id}`;
+                    // Decide endpoint based on role
+                    let fetchUrl = `${API_BASE_URL}/api/bookings/user/${user?.id}`;
+
                     if (user?.role === 'GUIDE') {
-                        const guideRes = await fetch('http://localhost:5000/api/guides/me', {
+                        // First get guide ID
+                        const guideRes = await fetch(`${API_BASE_URL}/api/guides/me`, {
                             headers: { Authorization: `Bearer ${token}` }
                         });
                         if (guideRes.ok) {
                             const guideData = await guideRes.json();
-                            fetchUrl = `http://localhost:5000/api/bookings/guide/${guideData._id}`;
+                            fetchUrl = `${API_BASE_URL}/api/bookings/guide/${guideData._id}`;
+                        } else {
+                            return; // Not a verified guide yet
                         }
                     }
+
                     const res = await fetch(fetchUrl, {
                         headers: { Authorization: `Bearer ${token}` }
                     });
                     const data = await res.json();
-                    setActiveBookings(data.filter((b: any) => b.status === 'ACCEPTED'));
-                } catch (error) {
-                    console.error("Navbar chat fetch failed:", error);
+                    setActiveBookings(data);
+                } catch (err) {
+                    console.error("Failed to fetch bookings for notifications", err);
                 }
             };
-            fetchActiveBookings();
+            fetchBookings();
 
             // Real-time notifications
-            const socket = io("http://localhost:5000");
+            const socket = io(API_BASE_URL);
             socket.emit("join_user", user.id);
             socket.on("new_notification", (notif) => {
                 console.log("🔔 New Notification:", notif);
                 alert(`${notif.message}`); // Simple alert for demo
-                fetchActiveBookings(); // Refresh bookings list
+                fetchBookings(); // Refresh bookings list
             });
 
             return () => {

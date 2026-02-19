@@ -8,7 +8,7 @@ export const useSocket = () => {
     const [socket, setSocket] = useState<Socket | null>(null);
 
     useEffect(() => {
-        const socketInstance = io('http://localhost:5000', {
+        const socketInstance = io(API_BASE_URL, {
             transports: ['websocket'],
             reconnection: true,
         });

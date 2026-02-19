@@ -37,13 +37,15 @@ const testimonialsFallback = [
 
 import { useEffect, useState } from "react";
 
+import { API_BASE_URL } from "@/lib/config";
+
 const TrustSection = () => {
     const [testimonials, setTestimonials] = useState<any[]>(testimonialsFallback);
 
     useEffect(() => {
         const fetchReviews = async () => {
             try {
-                const res = await fetch("http://localhost:5000/api/bookings/reviews");
+                const res = await fetch(`${API_BASE_URL}/api/bookings/reviews`);
                 const data = await res.json();
                 if (data.length > 0) {
                     setTestimonials(data);

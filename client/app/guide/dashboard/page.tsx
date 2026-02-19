@@ -30,7 +30,7 @@ function GuideDashboardContent() {
     const fetchGuideProfile = async () => {
         if (!user || !token) return;
         try {
-            const res = await fetch('http://localhost:5000/api/guides/me', {
+            const res = await fetch(`${API_BASE_URL}/api/guides/me`, {
                 headers: { Authorization: `Bearer ${token}` }
             });
 

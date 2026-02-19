@@ -1,5 +1,6 @@
 "use client";
 
+import { API_BASE_URL } from "@/lib/config";
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import { ArrowRight, Shield, MapPin, Loader2 } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
@@ -40,7 +41,7 @@ export default function Hero() {
                 const { latitude, longitude } = position.coords;
                 try {
                     // Call backend reverse geocoding
-                    const response = await fetch(`http://localhost:5000/api/openmap/reverse?lat=${latitude}&lon=${longitude}`);
+                    const response = await fetch(`${API_BASE_URL}/api/openmap/reverse?lat=${latitude}&lon=${longitude}`);
                     const data = await response.json();
 
                     if (data && data.address) {

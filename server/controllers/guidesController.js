@@ -35,7 +35,9 @@ exports.createOrUpdateProfile = async (req, res) => {
             languages: languagesArray,
             bio,
             hourlyRate,
-            imageUrl: req.file ? `http://localhost:5000/uploads/${req.file.filename}` : imageUrl
+            imageUrl: req.file
+                ? `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`
+                : imageUrl
         };
 
         let guide = await Guide.findOne({ userId: req.user.id });
