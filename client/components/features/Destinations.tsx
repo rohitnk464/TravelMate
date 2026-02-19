@@ -53,7 +53,7 @@ const Destinations = () => {
     }, []);
 
     return (
-        <section className="py-[120px] bg-background relative overflow-hidden">
+        <section className="py-10 md:py-20 bg-background relative overflow-hidden">
             <div className="container mx-auto px-6">
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}

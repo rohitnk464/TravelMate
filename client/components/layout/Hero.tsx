@@ -95,7 +95,7 @@ export default function Hero() {
             </motion.div>
 
             {/* Main Content */}
-            <div className="relative z-10 text-center px-4 max-w-5xl mx-auto mt-20">
+            <div className="relative z-10 text-center px-4 max-w-5xl mx-auto mt-32 md:mt-20">
                 {/* Context Chips */}
                 <motion.div
                     initial={{ opacity: 0, y: 20 }}

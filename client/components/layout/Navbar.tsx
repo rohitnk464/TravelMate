@@ -334,9 +334,17 @@ const Navbar = () => {
                                     </button>
                                 </Link>
                             )}
-                            <button className="w-full py-3 rounded-xl bg-primary text-white font-medium flex items-center justify-center gap-2">
-                                <Shield className="w-4 h-4" />
-                                Enable Safety Mode
+                            <button
+                                onClick={() => { toggleSafetyMode(); setIsMobileMenuOpen(false); }}
+                                className={cn(
+                                    "w-full py-3 rounded-xl font-bold flex items-center justify-center gap-2 transition-all shadow-lg",
+                                    isSafetyMode
+                                        ? "bg-red-500 text-white shadow-red-500/20"
+                                        : "bg-blue-600 text-white shadow-blue-500/20"
+                                )}
+                            >
+                                {isSafetyMode ? <ShieldCheck className="w-4 h-4" /> : <Shield className="w-4 h-4" />}
+                                {isSafetyMode ? "Disable Safety Mode" : "Enable Safety Mode"}
                             </button>
                         </div>
                     </motion.div>
