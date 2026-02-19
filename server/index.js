@@ -59,6 +59,7 @@ app.use('/api/guides', require('./routes/guidesRoutes'));
 app.use('/api/bookings', require('./routes/bookingRoutes'));
 app.use('/api/payment', require('./routes/paymentRoutes'));
 app.use('/api/chat', require('./routes/chatRoutes'));
+app.use('/api/seed', require('./routes/seedRoutes'));
 
 // Updated Socket handling for Chat
 io.on('connection', (socket) => {
