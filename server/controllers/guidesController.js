@@ -28,6 +28,8 @@ exports.createOrUpdateProfile = async (req, res) => {
             ? (typeof languages === 'string' ? languages.split(',').map(s => s.trim()) : languages)
             : [];
 
+        const user = await User.findById(req.user.id);
+
         const guideFields = {
             userId: req.user.id,
             name: name || req.user.name,
@@ -37,7 +39,8 @@ exports.createOrUpdateProfile = async (req, res) => {
             hourlyRate,
             imageUrl: req.file
                 ? `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`
-                : imageUrl
+                : imageUrl,
+            verified: user?.isVerified || false
         };
 
         let guide = await Guide.findOne({ userId: req.user.id });
