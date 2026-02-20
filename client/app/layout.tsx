@@ -3,7 +3,6 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/layout/Navbar";
 import Footer from "@/components/layout/Footer";
-import AIAssistant from "@/components/features/AIAssistant";
 import SafetySOS from "@/components/features/SafetySOS";
 import NetworkIndicator from "@/components/features/NetworkIndicator";
 import { JourneyProvider } from "@/context/JourneyContext";
@@ -32,7 +31,6 @@ export default function RootLayout({
             <main className="flex-grow">
               {children}
             </main>
-            <AIAssistant />
             <SafetySOS />
             <Footer />
           </JourneyProvider>

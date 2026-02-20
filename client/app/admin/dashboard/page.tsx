@@ -150,9 +150,35 @@ function AdminDashboardContent() {
         };
     }, [token]);
 
-    const handleToggleVerifyGuide = async (guideId: string, currentStatus: boolean) => {
+    const handleApproveGuide = async (guideId: string) => {
         try {
             const res = await fetch(`${API_BASE_URL}/api/admin/guides/${guideId}/approve`, {
+                method: "PUT",
+                headers: { Authorization: `Bearer ${token}` }
+            });
+
+            if (res.ok) {
+                setGuides(prev => prev.map(g => g._id === guideId ? { ...g, isApproved: true, role: 'GUIDE' } : g));
+                console.log("Guide approved successfully");
+            } else {
+                const errorData = await res.json();
+                console.error("Approval failed:", errorData.message);
+                alert(`Approval failed: ${errorData.message}`);
+                const guidesRes = await fetch(`${API_BASE_URL}/api/admin/guides`, {
+                    headers: { Authorization: `Bearer ${token}` }
+                });
+                const data = await guidesRes.json();
+                setGuides(data);
+            }
+        } catch (error) {
+            console.error("Failed to approve guide", error);
+            alert("Connection error. Please check if the server is running.");
+        }
+    };
+
+    const handleToggleVerifyGuide = async (guideId: string, currentStatus: boolean) => {
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/admin/guides/${guideId}/verify`, {
                 method: "PUT",
                 headers: { Authorization: `Bearer ${token}` }
             });
@@ -192,7 +218,7 @@ function AdminDashboardContent() {
     };
 
     const activeAlertsCount = incidents.filter(i => i.status !== 'resolved').length;
-    const pendingGuides = guides.filter(g => !g.isVerified);
+    const pendingGuides = guides.filter(g => !g.isApproved);
 
     return (
         <main className="min-h-screen bg-background text-foreground">
@@ -333,10 +359,25 @@ function AdminDashboardContent() {
                                     <div className="flex items-center gap-3">
                                         <span className={cn(
                                             "text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider",
-                                            guide.isVerified ? "bg-green-500/10 text-green-400 border border-green-500/20" : "bg-yellow-500/10 text-yellow-400 border border-yellow-500/20"
+                                            guide.isApproved ? "bg-blue-500/10 text-blue-400 border border-blue-500/20" : "bg-yellow-500/10 text-yellow-400 border border-yellow-500/20"
                                         )}>
-                                            {guide.isVerified ? "Verified" : "Pending"}
+                                            {guide.isApproved ? "Approved" : "Pending"}
                                         </span>
+                                        {guide.isVerified && (
+                                            <span className="text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider bg-green-500/10 text-green-400 border border-green-500/20">
+                                                Verified
+                                            </span>
+                                        )}
+
+                                        {!guide.isApproved && (
+                                            <button
+                                                onClick={() => handleApproveGuide(guide._id)}
+                                                className="flex items-center gap-1 px-3 py-1.5 bg-blue-500/10 hover:bg-blue-500/20 text-blue-400 text-xs font-bold rounded-lg border border-blue-500/20 transition-colors"
+                                            >
+                                                <CheckCircle className="w-3 h-3" /> Approve
+                                            </button>
+                                        )}
+
                                         <button
                                             onClick={() => handleToggleVerifyGuide(guide._id, guide.isVerified)}
                                             className={cn("flex items-center gap-1 px-3 py-1.5 text-xs font-bold rounded-lg border transition-colors",

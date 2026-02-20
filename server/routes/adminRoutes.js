@@ -14,6 +14,7 @@ router.get('/guides', getGuides);
 router.get('/bookings', getAllBookings);
 router.get('/active-sharers', getActiveSharers);
 router.put('/guides/:id/approve', approveGuide);
+router.put('/guides/:id/verify', verifyGuide);
 router.delete('/users/:id', deleteUser);
 router.get('/analytics', getAnalytics);
 

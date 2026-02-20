@@ -26,46 +26,55 @@ const getGuides = async (req, res) => {
     }
 };
 
-// @desc    Approve or unapprove a guide
+// @desc    Approve a pending guide
 // @route   PUT /api/admin/guides/:id/approve
 // @access  Private/Admin
 const approveGuide = async (req, res) => {
     try {
         const guideId = req.params.id;
-        console.log(`Attempting to toggle verify guide: ${guideId}`);
+        console.log(`Attempting to approve user to guide: ${guideId}`);
 
-        // Find user first to check role
-        const guide = await User.findById(guideId);
-        if (!guide) {
-            console.log(`Guide not found: ${guideId}`);
+        const user = await User.findById(guideId);
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
+        }
+
+        user.isApproved = true;
+        // Also ensure they have the GUIDE role
+        if (user.role !== 'ADMIN') user.role = 'GUIDE';
+        await user.save();
+
+        res.json({ message: 'User approved as Guide', guide: user });
+    } catch (error) {
+        console.error('Approve Guide Error:', error);
+        res.status(500).json({ message: error.message });
+    }
+};
+
+// @desc    Verify a guide (for safety mode)
+// @route   PUT /api/admin/guides/:id/verify
+// @access  Private/Admin
+const verifyGuide = async (req, res) => {
+    try {
+        const guideId = req.params.id;
+        const user = await User.findById(guideId);
+        if (!user) {
             return res.status(404).json({ message: 'Guide not found' });
         }
 
-        console.log(`Found user: ${guide.name}, Role: ${guide.role}`);
+        const newVerifiedStatus = !user.isVerified;
+        user.isVerified = newVerifiedStatus;
+        await user.save();
 
-        const isGuide = guide.role.toUpperCase() === 'GUIDE' || guide.role.toLowerCase() === 'translator';
+        // Also update the Guide collection so the frontend can see it
+        await Guide.findOneAndUpdate(
+            { userId: guideId },
+            { $set: { verified: newVerifiedStatus } }
+        );
 
-        if (isGuide) {
-            const updateData = { isVerified: !guide.isVerified };
-            if (guide.role.toLowerCase() === 'translator') {
-                updateData.role = 'GUIDE';
-            }
-
-            // USE findByIdAndUpdate TO BYPASS PRE-SAVE HOOKS
-            const updatedGuide = await User.findByIdAndUpdate(
-                guideId,
-                { $set: updateData },
-                { new: true }
-            );
-
-            console.log(`Guide verification toggled successfully: ${updatedGuide.email}`);
-            res.json({ message: 'Guide verification toggled', guide: updatedGuide });
-        } else {
-            console.log(`User is not a guide: ${guide.role}`);
-            res.status(400).json({ message: `User role is ${guide.role}, not a guide.` });
-        }
+        res.json({ message: 'Guide verification toggled', guide: user });
     } catch (error) {
-        console.error('Approve Guide Error:', error);
+        console.error('Verify Guide Error:', error);
         res.status(500).json({ message: error.message });
     }
 };
@@ -184,4 +193,4 @@ const getAllBookings = async (req, res) => {
     }
 };
 
-module.exports = { getUsers, getGuides, approveGuide, deleteUser, getActiveSharers, getAnalytics, getAllBookings };
+module.exports = { getUsers, getGuides, approveGuide, verifyGuide, deleteUser, getActiveSharers, getAnalytics, getAllBookings };

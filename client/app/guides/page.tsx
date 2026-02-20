@@ -72,7 +72,7 @@ export default function GuidesPage() {
             g.location.toLowerCase().includes(searchTerm.toLowerCase()) ||
             (g.specialties && g.specialties.some((s: string) => s.toLowerCase().includes(searchTerm.toLowerCase())));
 
-        if (isSafetyMode) return matchesSearch && g.verified && g.rating >= 4.8;
+        if (isSafetyMode) return matchesSearch && g.verified;
         return matchesSearch;
     });
 
