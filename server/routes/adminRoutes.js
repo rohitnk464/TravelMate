@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const incidentService = require('../services/incidentService');
 const { protect, authorizeRoles } = require('../middleware/authMiddleware');
-const { getUsers, getGuides, approveGuide, deleteUser, getActiveSharers, getAnalytics, getAllBookings } = require('../controllers/adminController');
+const { getUsers, getGuides, approveGuide, verifyGuide, deleteUser, getActiveSharers, getAnalytics, getAllBookings } = require('../controllers/adminController');
 
 // Protect all admin routes
 router.use(protect);
