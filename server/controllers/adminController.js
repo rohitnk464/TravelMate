@@ -26,15 +26,13 @@ const getGuides = async (req, res) => {
     }
 };
 
-// @desc    Approve a guide
+// @desc    Approve or unapprove a guide
 // @route   PUT /api/admin/guides/:id/approve
 // @access  Private/Admin
 const approveGuide = async (req, res) => {
     try {
         const guideId = req.params.id;
-        console.log(`Attempting to approve guide: ${guideId}`);
-
-        const updateData = { isVerified: true };
+        console.log(`Attempting to toggle verify guide: ${guideId}`);
 
         // Find user first to check role
         const guide = await User.findById(guideId);
@@ -48,6 +46,7 @@ const approveGuide = async (req, res) => {
         const isGuide = guide.role.toUpperCase() === 'GUIDE' || guide.role.toLowerCase() === 'translator';
 
         if (isGuide) {
+            const updateData = { isVerified: !guide.isVerified };
             if (guide.role.toLowerCase() === 'translator') {
                 updateData.role = 'GUIDE';
             }
@@ -59,8 +58,8 @@ const approveGuide = async (req, res) => {
                 { new: true }
             );
 
-            console.log(`Guide approved successfully: ${updatedGuide.email}`);
-            res.json({ message: 'Guide approved', guide: updatedGuide });
+            console.log(`Guide verification toggled successfully: ${updatedGuide.email}`);
+            res.json({ message: 'Guide verification toggled', guide: updatedGuide });
         } else {
             console.log(`User is not a guide: ${guide.role}`);
             res.status(400).json({ message: `User role is ${guide.role}, not a guide.` });

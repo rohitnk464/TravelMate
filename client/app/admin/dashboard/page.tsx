@@ -150,7 +150,7 @@ function AdminDashboardContent() {
         };
     }, [token]);
 
-    const handleApproveGuide = async (guideId: string) => {
+    const handleToggleVerifyGuide = async (guideId: string, currentStatus: boolean) => {
         try {
             const res = await fetch(`${API_BASE_URL}/api/admin/guides/${guideId}/approve`, {
                 method: "PUT",
@@ -158,8 +158,8 @@ function AdminDashboardContent() {
             });
 
             if (res.ok) {
-                setGuides(prev => prev.map(g => g._id === guideId ? { ...g, isVerified: true, role: 'GUIDE' } : g));
-                console.log("Guide approved successfully");
+                setGuides(prev => prev.map(g => g._id === guideId ? { ...g, isVerified: !currentStatus, role: 'GUIDE' } : g));
+                console.log("Guide verification toggled successfully");
             } else {
                 const errorData = await res.json();
                 console.error("Approval failed:", errorData.message);
@@ -335,16 +335,16 @@ function AdminDashboardContent() {
                                             "text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider",
                                             guide.isVerified ? "bg-green-500/10 text-green-400 border border-green-500/20" : "bg-yellow-500/10 text-yellow-400 border border-yellow-500/20"
                                         )}>
-                                            {guide.isVerified ? "Approved" : "Pending"}
+                                            {guide.isVerified ? "Verified" : "Pending"}
                                         </span>
-                                        {!guide.isVerified && (
-                                            <button
-                                                onClick={() => handleApproveGuide(guide._id)}
-                                                className="flex items-center gap-1 px-3 py-1.5 bg-green-500/10 hover:bg-green-500/20 text-green-400 text-xs font-bold rounded-lg border border-green-500/20 transition-colors"
-                                            >
-                                                <CheckCircle className="w-3 h-3" /> Approve
-                                            </button>
-                                        )}
+                                        <button
+                                            onClick={() => handleToggleVerifyGuide(guide._id, guide.isVerified)}
+                                            className={cn("flex items-center gap-1 px-3 py-1.5 text-xs font-bold rounded-lg border transition-colors",
+                                                guide.isVerified ? "bg-red-500/10 hover:bg-red-500/20 text-red-400 border-red-500/20" : "bg-green-500/10 hover:bg-green-500/20 text-green-400 border-green-500/20"
+                                            )}
+                                        >
+                                            <Shield className="w-3 h-3" /> {guide.isVerified ? "Unverify" : "Verify"}
+                                        </button>
                                         <button
                                             onClick={() => handleDeleteUser(guide._id)}
                                             className="p-2 text-gray-500 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-all"
@@ -503,24 +503,44 @@ function AdminDashboardContent() {
                                                 </button>
                                             )}
                                             {incident.status === 'acknowledged' && (
-                                                <button
-                                                    onClick={async () => {
-                                                        const res = await fetch(`${API_BASE_URL}/api/admin/incidents/${incident._id}`, {
-                                                            method: 'PATCH',
-                                                            headers: {
-                                                                'Content-Type': 'application/json',
-                                                                'Authorization': `Bearer ${token}`
-                                                            },
-                                                            body: JSON.stringify({ status: 'resolved' })
-                                                        });
-                                                        if (res.ok) {
-                                                            setIncidents(prev => prev.filter(i => i._id !== incident._id));
-                                                        }
-                                                    }}
-                                                    className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-bold rounded-xl transition-colors"
-                                                >
-                                                    Resolve
-                                                </button>
+                                                <div className="flex flex-col gap-2">
+                                                    <select
+                                                        className="bg-zinc-800 text-xs text-white px-2 py-1 rounded border border-white/10"
+                                                        onChange={(e) => {
+                                                            if (e.target.value) {
+                                                                fetch(`${API_BASE_URL}/api/admin/incidents/${incident._id}`, {
+                                                                    method: 'PATCH',
+                                                                    headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                                                                    body: JSON.stringify({ log: { text: `Assigned Guide: ${e.target.options[e.target.selectedIndex].text}`, time: new Date(), source: "Admin" } })
+                                                                });
+                                                                alert(`Dispatched ${e.target.options[e.target.selectedIndex].text} to incident location.`);
+                                                            }
+                                                        }}
+                                                    >
+                                                        <option value="">Dispatch Verified Guide...</option>
+                                                        {guides.filter(g => g.isVerified).map(g => (
+                                                            <option key={g._id} value={g._id}>{g.name} (Verified)</option>
+                                                        ))}
+                                                    </select>
+                                                    <button
+                                                        onClick={async () => {
+                                                            const res = await fetch(`${API_BASE_URL}/api/admin/incidents/${incident._id}`, {
+                                                                method: 'PATCH',
+                                                                headers: {
+                                                                    'Content-Type': 'application/json',
+                                                                    'Authorization': `Bearer ${token}`
+                                                                },
+                                                                body: JSON.stringify({ status: 'resolved' })
+                                                            });
+                                                            if (res.ok) {
+                                                                setIncidents(prev => prev.filter(i => i._id !== incident._id));
+                                                            }
+                                                        }}
+                                                        className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white text-sm font-bold rounded-xl transition-colors w-full"
+                                                    >
+                                                        Resolve
+                                                    </button>
+                                                </div>
                                             )}
                                         </div>
                                     </div>

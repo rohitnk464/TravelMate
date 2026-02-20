@@ -135,7 +135,7 @@ const SafetySOS = () => {
 
     return (
         <>
-            <div className="fixed bottom-6 left-6 z-50 max-md:bottom-[52%] max-md:left-4">
+            <div className="fixed bottom-6 left-6 z-40 max-md:bottom-24 max-md:left-4">
                 <motion.button
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}

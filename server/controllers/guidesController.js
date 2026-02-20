@@ -162,3 +162,53 @@ exports.getGuides = async (req, res) => {
         res.status(500).json({ message: error.message });
     }
 };
+
+exports.deleteGuide = async (req, res) => {
+    try {
+        const guide = await Guide.findById(req.params.id);
+        if (!guide) return res.status(404).json({ message: 'Guide not found' });
+        await guide.deleteOne();
+        res.json({ message: 'Guide removed' });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+exports.verifyGuide = async (req, res) => {
+    try {
+        const guide = await Guide.findById(req.params.id);
+        if (!guide) return res.status(404).json({ message: 'Guide not found' });
+
+        guide.verified = !guide.verified;
+        await guide.save();
+        res.json({ message: 'Guide verification toggled', verified: guide.verified });
+    } catch (error) {
+        res.status(500).json({ message: error.message });
+    }
+};
+
+exports.adminCreateGuide = async (req, res) => {
+    try {
+        const { name, location, languages, bio, hourlyRate, imageUrl } = req.body;
+        const languagesArray = languages
+            ? (typeof languages === 'string' ? languages.split(',').map(s => s.trim()) : languages)
+            : [];
+
+        const guideFields = {
+            name,
+            location,
+            languages: languagesArray,
+            bio,
+            hourlyRate,
+            imageUrl: req.file
+                ? `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`
+                : imageUrl
+        };
+
+        const guide = new Guide(guideFields);
+        await guide.save();
+        res.status(201).json(guide);
+    } catch (error) {
+        res.status(400).json({ message: error.message });
+    }
+};
