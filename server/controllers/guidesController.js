@@ -38,7 +38,7 @@ exports.createOrUpdateProfile = async (req, res) => {
             bio,
             hourlyRate,
             imageUrl: req.file
-                ? `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`
+                ? req.file.path
                 : imageUrl,
             verified: user?.isVerified || false
         };
@@ -204,7 +204,7 @@ exports.adminCreateGuide = async (req, res) => {
             bio,
             hourlyRate,
             imageUrl: req.file
-                ? `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}`
+                ? req.file.path
                 : imageUrl
         };
 

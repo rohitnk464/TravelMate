@@ -69,7 +69,7 @@ router.post('/', upload.single('image'), async (req, res) => {
         tags: tags ? (typeof tags === 'string' ? tags.split(',').map(t => t.trim()).filter(t => t !== "") : tags) : [],
         safetyScore: safetyScore && safetyScore !== "" ? Number(safetyScore) : 0,
         // Use uploaded file path or provided URL
-        image: req.file ? `data:${req.file.mimetype};base64,${req.file.buffer.toString('base64')}` : (req.body.image || "")
+        image: req.file ? req.file.path : (req.body.image || "")
     };
 
     console.log("Creating place with data:", placeData);
