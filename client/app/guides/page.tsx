@@ -260,7 +260,7 @@ export default function GuidesPage() {
                                 {/* Cover / Image */}
                                 <div className="p-6 pb-0 flex items-center gap-4">
                                     <div className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-white/20">
-                                        <Image src={guide.image || guide.imageUrl || DEFAULT_AVATAR} alt={guide.name} fill className="object-cover" unoptimized />
+                                        <img src={guide.image || guide.imageUrl || DEFAULT_AVATAR} alt={guide.name} className="w-full h-full object-cover" />
                                     </div>
                                     <div>
                                         <h3 className="font-bold text-lg text-white flex items-center gap-1">
@@ -321,7 +321,7 @@ export default function GuidesPage() {
                             <div className="p-5">
                                 <div className="flex items-center gap-4 mb-6">
                                     <div className="relative w-16 h-16 rounded-full overflow-hidden border-2 border-white/20">
-                                        <Image src={selectedGuide.image || selectedGuide.imageUrl || DEFAULT_AVATAR} alt={selectedGuide.name} fill className="object-cover" unoptimized />
+                                        <img src={selectedGuide.image || selectedGuide.imageUrl || DEFAULT_AVATAR} alt={selectedGuide.name} className="w-full h-full object-cover" />
                                     </div>
                                     <div>
                                         <h2 className="text-2xl font-bold font-mono">Book {selectedGuide.name}</h2>

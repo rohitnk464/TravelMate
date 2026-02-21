@@ -90,12 +90,10 @@ const Destinations = () => {
                                 transition={{ delay: index * 0.1, duration: 0.5 }}
                                 className={`group relative h-[400px] rounded-3xl overflow-hidden cursor-pointer ${isSafetyMode ? "border-2 border-pink-500/30" : ""}`}
                             >
-                                <Image
+                                <img
                                     src={dest.image || DEFAULT_IMAGE}
                                     alt={dest.name || "Destination"}
-                                    fill
-                                    className="object-cover transition-transform duration-700 group-hover:scale-110"
-                                    unoptimized
+                                    className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent" />
 
