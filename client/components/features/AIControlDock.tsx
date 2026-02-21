@@ -91,6 +91,43 @@ const AIControlDock = () => {
     const searchParams = useSearchParams();
     const activeAgent = agents.find(a => a.id === activeTab) || agents[0];
 
+    // Functional States for Guardian
+    const [isRecording, setIsRecording] = useState(false);
+    const [isSirenActive, setIsSirenActive] = useState(false);
+    const [showFakeCall, setShowFakeCall] = useState(false);
+    const [sosMode, setSosMode] = useState(false);
+
+    // Siren Audio Reference (created dynamically)
+    const [sirenAudio, setSirenAudio] = useState<HTMLAudioElement | null>(null);
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            const audio = new Audio("https://actions.google.com/sounds/v1/alarms/bugle_tune.ogg");
+            audio.loop = true;
+            setSirenAudio(audio);
+        }
+    }, []);
+
+    const toggleSiren = () => {
+        if (!sirenAudio) return;
+        if (isSirenActive) {
+            sirenAudio.pause();
+            sirenAudio.currentTime = 0;
+            setIsSirenActive(false);
+        } else {
+            sirenAudio.play().catch(e => console.error("Audio play failed:", e));
+            setIsSirenActive(true);
+        }
+    };
+
+    const toggleRecord = () => {
+        setIsRecording(!isRecording);
+    };
+
+    const triggerSOS = () => {
+        setSosMode(true);
+        setTimeout(() => setSosMode(false), 5000); // Auto dismiss after 5 seconds
+    };
+
     // Listen to scroll for sticky effect
     useEffect(() => {
         const handleScroll = () => setIsSticky(window.scrollY > 500);
@@ -195,36 +232,49 @@ const AIControlDock = () => {
                             {/* Middle & Right: Context Aware */}
                             {activeTab === "safe" ? (
                                 <>
-                                    {/* Safety Tools */}
-                                    <div className="col-span-2 grid grid-cols-2 gap-4">
-                                        <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-4 flex flex-col justify-between group hover:bg-red-500/20 transition-colors cursor-pointer" onClick={toggleSafetyMode}>
-                                            <div className="flex justify-between items-start">
-                                                <Shield className="w-6 h-6 text-red-500" />
-                                                <div className={cn("w-3 h-3 rounded-full", isSafetyMode ? "bg-red-500 animate-pulse" : "bg-gray-600")} />
+                                    {/* Safety Tools & Score */}
+                                    <div className="col-span-2 flex flex-col gap-4">
+                                        <div className="flex items-center justify-around bg-black/20 rounded-2xl p-4 border border-white/5">
+                                            <div className="text-center">
+                                                <div className="text-[10px] text-gray-500 uppercase tracking-widest mb-1">Safe Score</div>
+                                                <div className="text-2xl font-bold text-green-400 font-mono">{safetyScore || "98"}/100</div>
                                             </div>
-                                            <div>
-                                                <div className="text-lg font-bold text-white">Safety Shield</div>
-                                                <div className="text-xs text-red-300">{isSafetyMode ? "ACTIVE PROTECTION" : "TAP TO ACTIVATE"}</div>
+                                            <div className="text-center">
+                                                <div className="text-[10px] text-gray-500 uppercase tracking-widest mb-1">Status</div>
+                                                <div className="text-2xl font-bold text-white font-mono">{isSafetyMode ? "Secured" : "Monitoring"}</div>
                                             </div>
                                         </div>
 
-                                        <div className="grid grid-cols-2 gap-2">
-                                            <button className="bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl flex flex-col items-center justify-center gap-2 p-2 transition-colors">
-                                                <Phone className="w-5 h-5 text-blue-400" />
-                                                <span className="text-xs font-medium text-gray-300">Fake Call</span>
-                                            </button>
-                                            <button className="bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl flex flex-col items-center justify-center gap-2 p-2 transition-colors">
-                                                <Bell className="w-5 h-5 text-yellow-400" />
-                                                <span className="text-xs font-medium text-gray-300">Siren</span>
-                                            </button>
-                                            <button className="bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl flex flex-col items-center justify-center gap-2 p-2 transition-colors">
-                                                <Mic className="w-5 h-5 text-green-400" />
-                                                <span className="text-xs font-medium text-gray-300">Record</span>
-                                            </button>
-                                            <button className="bg-red-600/20 hover:bg-red-600/40 border border-red-500/50 rounded-xl flex flex-col items-center justify-center gap-2 p-2 transition-colors animate-pulse">
-                                                <AlertTriangle className="w-5 h-5 text-red-500" />
-                                                <span className="text-xs font-bold text-red-400">SOS</span>
-                                            </button>
+                                        <div className="grid grid-cols-2 gap-4 h-full">
+                                            <div className="bg-red-500/10 border border-red-500/20 rounded-xl p-4 flex flex-col justify-between group hover:bg-red-500/20 transition-colors cursor-pointer" onClick={toggleSafetyMode}>
+                                                <div className="flex justify-between items-start">
+                                                    <Shield className="w-6 h-6 text-red-500" />
+                                                    <div className={cn("w-3 h-3 rounded-full", isSafetyMode ? "bg-red-500 animate-pulse" : "bg-gray-600")} />
+                                                </div>
+                                                <div>
+                                                    <div className="text-lg font-bold text-white">Safety Shield</div>
+                                                    <div className="text-xs text-red-300">{isSafetyMode ? "ACTIVE PROTECTION" : "TAP TO ACTIVATE"}</div>
+                                                </div>
+                                            </div>
+
+                                            <div className="grid grid-cols-2 gap-2">
+                                                <button onClick={() => setShowFakeCall(true)} className="bg-white/5 hover:bg-white/10 border border-white/10 rounded-xl flex flex-col items-center justify-center gap-2 p-2 transition-colors">
+                                                    <Phone className="w-5 h-5 text-blue-400" />
+                                                    <span className="text-xs font-medium text-gray-300">Fake Call</span>
+                                                </button>
+                                                <button onClick={toggleSiren} className={cn("border rounded-xl flex flex-col items-center justify-center gap-2 p-2 transition-colors", isSirenActive ? "bg-yellow-500/20 hover:bg-yellow-500/30 border-yellow-500/50" : "bg-white/5 hover:bg-white/10 border-white/10")}>
+                                                    <Bell className={cn("w-5 h-5", isSirenActive ? "text-yellow-400 animate-pulse" : "text-yellow-400")} />
+                                                    <span className="text-xs font-medium text-gray-300">{isSirenActive ? "Stop Siren" : "Siren"}</span>
+                                                </button>
+                                                <button onClick={toggleRecord} className={cn("border rounded-xl flex flex-col items-center justify-center gap-2 p-2 transition-colors", isRecording ? "bg-green-500/20 hover:bg-green-500/30 border-green-500/50" : "bg-white/5 hover:bg-white/10 border-white/10")}>
+                                                    <Mic className={cn("w-5 h-5", isRecording ? "text-green-400 animate-pulse" : "text-green-400")} />
+                                                    <span className="text-xs font-medium text-gray-300">{isRecording ? "Recording..." : "Record"}</span>
+                                                </button>
+                                                <button onClick={triggerSOS} className={cn("border rounded-xl flex flex-col items-center justify-center gap-2 p-2 transition-all", sosMode ? "bg-red-600/40 border-red-500 scale-95" : "bg-red-600/20 hover:bg-red-600/40 border-red-500/50 animate-pulse")}>
+                                                    <AlertTriangle className="w-5 h-5 text-red-500" />
+                                                    <span className="text-xs font-bold text-red-400">{sosMode ? "ALERT SENT" : "SOS"}</span>
+                                                </button>
+                                            </div>
                                         </div>
                                     </div>
                                 </>
@@ -294,6 +344,29 @@ const AIControlDock = () => {
                     </AnimatePresence>
                 </div>
             </motion.div>
+
+            {/* Fake Call Overlay */}
+            {showFakeCall && (
+                <div className="fixed inset-0 z-[100] bg-black/95 flex flex-col items-center justify-center p-8 animate-in fade-in duration-300">
+                    <div className="text-white text-center space-y-8 max-w-sm w-full">
+                        <div className="space-y-2">
+                            <h2 className="text-3xl font-light">Dad (Mobile)</h2>
+                            <p className="text-green-400 text-sm animate-pulse">Calling...</p>
+                        </div>
+                        <div className="w-32 h-32 bg-gray-600 rounded-full mx-auto flex items-center justify-center">
+                            <Phone className="w-16 h-16 text-white opacity-50" />
+                        </div>
+                        <div className="grid grid-cols-2 gap-4 pt-12">
+                            <button onClick={() => setShowFakeCall(false)} className="bg-red-500 hover:bg-red-600 text-white rounded-full py-4 px-8 font-bold flex justify-center items-center h-16 w-full">
+                                Decline
+                            </button>
+                            <button onClick={() => setShowFakeCall(false)} className="bg-green-500 hover:bg-green-600 text-white rounded-full py-4 px-8 font-bold flex justify-center items-center h-16 w-full shadow-[0_0_20px_rgba(74,222,128,0.4)] animate-pulse">
+                                Accept
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
         </section>
     );
 };
