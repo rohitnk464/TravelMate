@@ -118,6 +118,15 @@ app.use('/api/ai-planner', require('./routes/aiPlannerRoutes'));
 app.use('/api/openmap', require('./routes/openMapRoutes'));
 app.use('/api/safety', require('./routes/safetyRoutes'));
 
+// Global Error Handler to ensure JSON responses
+app.use((err, req, res, next) => {
+    console.error('Unhandled Error:', err);
+    res.status(err.status || 500).json({
+        message: err.message || 'Internal Server Error',
+        error: process.env.NODE_ENV === 'development' ? err : {}
+    });
+});
+
 // Database Connection
 const connectDB = async () => {
     try {
