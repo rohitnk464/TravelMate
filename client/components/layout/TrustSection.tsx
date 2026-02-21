@@ -2,7 +2,6 @@
 
 import { motion } from "framer-motion";
 import { ShieldCheck, Users, Heart, Star, Quote } from "lucide-react";
-import Image from "next/image";
 
 const stats = [
     { label: "Active Travelers", value: "10,000+", icon: Users, color: "text-blue-400" },
@@ -112,12 +111,10 @@ const TrustSection = () => {
 
                             <div className="flex items-center gap-4 mb-6">
                                 <div className="relative w-12 h-12 rounded-full overflow-hidden border border-white/20">
-                                    <Image
+                                    <img
                                         src={t.image}
                                         alt={t.name}
-                                        fill
-                                        className="object-cover"
-                                        unoptimized
+                                        className="w-full h-full object-cover"
                                     />
                                 </div>
                                 <div>

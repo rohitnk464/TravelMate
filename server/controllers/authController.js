@@ -131,7 +131,7 @@ const updateProfile = async (req, res) => {
 
         // Handle image: either from file upload or URL
         if (req.file) {
-            user.profileImage = `/uploads/${req.file.filename}`;
+            user.profileImage = req.file.path;
         } else if (profileImage !== undefined) {
             user.profileImage = profileImage;
         }
