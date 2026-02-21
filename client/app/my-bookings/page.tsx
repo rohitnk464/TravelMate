@@ -146,9 +146,11 @@ export default function MyBookingsPage() {
     };
 
     const [payingBookingId, setPayingBookingId] = useState<string | null>(null);
+    const [checkoutBooking, setCheckoutBooking] = useState<any>(null); // Controls the overlay
+    const [paymentStatus, setPaymentStatus] = useState<"idle" | "processing" | "success">("idle");
 
     const handlePayment = async (bookingId: string, amount: number) => {
-        setPayingBookingId(bookingId);
+        setPaymentStatus("processing");
         try {
             const res = await fetch(`${API_BASE_URL}/api/payment/demo`, {
                 method: 'POST',
@@ -160,17 +162,19 @@ export default function MyBookingsPage() {
             });
 
             if (res.ok) {
-                alert("Payment successful! Your trip is fully confirmed.");
+                setPaymentStatus("success");
                 fetchBookings();
             } else {
                 const data = await res.json();
                 alert(data.message || "Payment failed");
+                setCheckoutBooking(null);
+                setPaymentStatus("idle");
             }
         } catch (error) {
             console.error(error);
             alert("An error occurred during payment.");
-        } finally {
-            setPayingBookingId(null);
+            setCheckoutBooking(null);
+            setPaymentStatus("idle");
         }
     };
 
@@ -329,11 +333,13 @@ export default function MyBookingsPage() {
 
                                         {isPassenger && booking.status === 'ACCEPTED' && booking.paymentStatus !== 'PAID' && (
                                             <button
-                                                onClick={() => handlePayment(booking._id, booking.totalPrice)}
-                                                disabled={payingBookingId === booking._id}
-                                                className="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-full transition-colors text-sm font-bold flex items-center gap-2 shadow-lg shadow-green-500/20 disabled:opacity-50"
+                                                onClick={() => {
+                                                    setCheckoutBooking(booking);
+                                                    setPaymentStatus("idle");
+                                                }}
+                                                className="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-full transition-colors text-sm font-bold flex items-center gap-2 shadow-lg shadow-green-500/20"
                                             >
-                                                {payingBookingId === booking._id ? <Loader2 className="w-4 h-4 animate-spin" /> : <CreditCard className="w-4 h-4" />}
+                                                <CreditCard className="w-4 h-4" />
                                                 Pay ₹{booking.totalPrice} Now
                                             </button>
                                         )}
@@ -432,6 +438,107 @@ export default function MyBookingsPage() {
                     </motion.div>
                 </div>
             )}
+
+            {/* Payment Checkout Overlay */}
+            <AnimatePresence>
+                {checkoutBooking && (
+                    <div className="fixed inset-0 z-[60] flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+                        <motion.div
+                            initial={{ opacity: 0, scale: 0.95 }}
+                            animate={{ opacity: 1, scale: 1 }}
+                            exit={{ opacity: 0, scale: 0.95 }}
+                            className="bg-[#111] border border-white/10 rounded-3xl w-full max-w-md shadow-2xl relative overflow-hidden"
+                        >
+                            {paymentStatus !== "success" && (
+                                <button
+                                    onClick={() => setCheckoutBooking(null)}
+                                    className="absolute top-4 right-4 p-2 bg-white/5 rounded-full hover:bg-white/10 transition-colors z-10 text-gray-400"
+                                >
+                                    <XCircle className="w-5 h-5" />
+                                </button>
+                            )}
+
+                            <div className="p-6">
+                                {paymentStatus === "idle" || paymentStatus === "processing" ? (
+                                    <div className="space-y-6">
+                                        <div className="text-center mb-6">
+                                            <h2 className="text-2xl font-bold font-mono">Complete Payment</h2>
+                                            <p className="text-gray-400 text-sm">You are booking a trip with {checkoutBooking.guideId?.name}</p>
+                                        </div>
+
+                                        <div className="bg-blue-500/10 border border-blue-500/20 p-4 rounded-xl">
+                                            <div className="flex items-center justify-between mb-2">
+                                                <span className="text-sm text-gray-400">Booking Summary</span>
+                                                <span className="text-xs px-2 py-0.5 rounded bg-blue-500/20 text-blue-400 font-bold uppercase tracking-wider">Demo Mode</span>
+                                            </div>
+                                            <div className="space-y-1">
+                                                <div className="flex justify-between text-sm">
+                                                    <span className="text-gray-500">Guide:</span>
+                                                    <span className="text-gray-300 font-medium">{checkoutBooking.guideId?.name}</span>
+                                                </div>
+                                                <div className="flex justify-between text-sm">
+                                                    <span className="text-gray-500">Schedule:</span>
+                                                    <span className="text-gray-300 font-medium">{new Date(checkoutBooking.date).toLocaleDateString()} @ {checkoutBooking.time}</span>
+                                                </div>
+                                                <div className="flex justify-between text-sm">
+                                                    <span className="text-gray-500">Duration:</span>
+                                                    <span className="text-gray-300 font-medium">{checkoutBooking.duration}</span>
+                                                </div>
+                                                <div className="border-t border-white/10 my-2 pt-2 flex justify-between">
+                                                    <span className="text-white font-bold">Total Amount:</span>
+                                                    <span className="text-green-400 font-bold text-lg">₹{checkoutBooking.totalPrice}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="space-y-4">
+                                            <p className="text-center text-sm text-gray-400 px-4">
+                                                Clicking "Pay Now" will simulate a payment and confirm your booking instantly.
+                                            </p>
+
+                                            <button
+                                                onClick={() => handlePayment(checkoutBooking._id, checkoutBooking.totalPrice)}
+                                                disabled={paymentStatus === "processing"}
+                                                className="w-full py-4 bg-green-600 hover:bg-green-700 text-white font-bold rounded-xl transition-all flex items-center justify-center gap-2 shadow-lg shadow-green-500/20 disabled:opacity-50"
+                                            >
+                                                {paymentStatus === "processing" ? (
+                                                    <><Loader2 className="w-5 h-5 animate-spin" /> Simulating Payment...</>
+                                                ) : (
+                                                    <><CreditCard className="w-5 h-5" /> Pay ₹{checkoutBooking.totalPrice} Now</>
+                                                )}
+                                            </button>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className="text-center py-6">
+                                        <motion.div
+                                            initial={{ scale: 0 }}
+                                            animate={{ scale: 1 }}
+                                            transition={{ type: "spring", damping: 12, stiffness: 200 }}
+                                            className="w-24 h-24 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-6 border border-green-500/30"
+                                        >
+                                            <CheckCircle className="w-12 h-12 text-green-500" />
+                                        </motion.div>
+                                        <h3 className="text-3xl font-bold text-white mb-2 font-mono">Payment Successful!</h3>
+                                        <p className="text-gray-400 mb-8 max-w-[280px] mx-auto text-sm leading-relaxed">
+                                            Your trip with <strong>{checkoutBooking.guideId?.name}</strong> is now fully confirmed and ready!
+                                        </p>
+                                        <button
+                                            onClick={() => {
+                                                setCheckoutBooking(null);
+                                                setPaymentStatus("idle");
+                                            }}
+                                            className="w-full py-4 bg-white text-black font-bold rounded-xl hover:bg-gray-200 transition-colors"
+                                        >
+                                            Done
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+                        </motion.div>
+                    </div>
+                )}
+            </AnimatePresence>
         </main>
     );
 }
