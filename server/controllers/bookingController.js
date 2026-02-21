@@ -221,16 +221,18 @@ exports.getAllReviews = async (req, res) => {
             .sort({ 'review.createdAt': -1 })
             .limit(10); // Show top 10 recent reviews
 
-        const formattedReviews = bookingsWithReviews.map(b => ({
-            id: b._id,
-            name: b.userId.name,
-            role: "Verified Traveler", // Default role
-            location: b.guideId?.location || "Global Traveler",
-            image: b.userId.profileImage || `https://ui-avatars.com/api/?name=${encodeURIComponent(b.userId.name)}&background=random`,
-            text: b.review.comment,
-            rating: b.review.rating,
-            date: b.review.createdAt
-        }));
+        const formattedReviews = bookingsWithReviews
+            .filter(b => b.userId) // Ensure user still exists
+            .map(b => ({
+                id: b._id,
+                name: b.userId.name,
+                role: "Verified Traveler", // Default role
+                location: b.guideId?.location || "Global Traveler",
+                image: b.userId.profileImage || `https://ui-avatars.com/api/?name=${encodeURIComponent(b.userId.name)}&background=random`,
+                text: b.review.comment,
+                rating: b.review.rating,
+                date: b.review.createdAt
+            }));
 
         res.json(formattedReviews);
     } catch (error) {
