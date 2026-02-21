@@ -145,6 +145,35 @@ export default function MyBookingsPage() {
         }
     };
 
+    const [payingBookingId, setPayingBookingId] = useState<string | null>(null);
+
+    const handlePayment = async (bookingId: string, amount: number) => {
+        setPayingBookingId(bookingId);
+        try {
+            const res = await fetch(`${API_BASE_URL}/api/payment/demo`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    Authorization: `Bearer ${token}`
+                },
+                body: JSON.stringify({ bookingId, amount })
+            });
+
+            if (res.ok) {
+                alert("Payment successful! Your trip is fully confirmed.");
+                fetchBookings();
+            } else {
+                const data = await res.json();
+                alert(data.message || "Payment failed");
+            }
+        } catch (error) {
+            console.error(error);
+            alert("An error occurred during payment.");
+        } finally {
+            setPayingBookingId(null);
+        }
+    };
+
     const getStatusColor = (status: string) => {
         switch (status) {
             case 'ACCEPTED': return 'text-green-400 border-green-400/30 bg-green-400/10';
@@ -298,13 +327,21 @@ export default function MyBookingsPage() {
                                             </button>
                                         )}
 
-                                        {isPassenger && booking.status === 'ACCEPTED' && (
+                                        {isPassenger && booking.status === 'ACCEPTED' && booking.paymentStatus !== 'PAID' && (
                                             <button
-                                                onClick={() => handleStatusUpdate(booking._id, 'COMPLETED')}
-                                                className="px-4 py-2 bg-emerald-500/10 text-emerald-400 rounded-full hover:bg-emerald-500/20 transition-colors text-sm font-bold flex items-center gap-2"
+                                                onClick={() => handlePayment(booking._id, booking.totalPrice)}
+                                                disabled={payingBookingId === booking._id}
+                                                className="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-full transition-colors text-sm font-bold flex items-center gap-2 shadow-lg shadow-green-500/20 disabled:opacity-50"
                                             >
-                                                <CheckCircle className="w-4 h-4" /> Mark as Completed
+                                                {payingBookingId === booking._id ? <Loader2 className="w-4 h-4 animate-spin" /> : <CreditCard className="w-4 h-4" />}
+                                                Pay ₹{booking.totalPrice} Now
                                             </button>
+                                        )}
+
+                                        {isPassenger && booking.status === 'ACCEPTED' && booking.paymentStatus === 'PAID' && (
+                                            <div className="px-4 py-2 bg-blue-500/10 text-blue-400 rounded-full text-sm font-bold flex items-center gap-2">
+                                                <CheckCircle className="w-4 h-4" /> Ready for Trip
+                                            </div>
                                         )}
 
                                         {booking.status === 'ACCEPTED' && (

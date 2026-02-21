@@ -237,9 +237,18 @@ function GuideDashboardContent() {
                 </div>
             ) : booking.status === 'ACCEPTED' && (
                 <div className="mt-6">
+                    {booking.paymentStatus !== 'PAID' ? (
+                        <div className="text-yellow-400 text-xs mb-3 text-center bg-yellow-400/10 py-2 rounded-lg border border-yellow-400/20 font-bold tracking-wide">
+                            Waiting for traveler to pay.
+                        </div>
+                    ) : (
+                        <div className="text-green-400 text-xs mb-3 text-center bg-green-400/10 py-2 rounded-lg border border-green-400/20 font-bold tracking-wide">
+                            Payment Received! Ready for trip.
+                        </div>
+                    )}
                     <button
                         onClick={() => handleAction(booking._id, 'COMPLETED')}
-                        disabled={!!processing}
+                        disabled={!!processing || booking.paymentStatus !== 'PAID'}
                         className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-bold flex items-center justify-center gap-2 transition-colors disabled:opacity-50"
                     >
                         <CheckCircle className="w-4 h-4" /> Mark as Completed

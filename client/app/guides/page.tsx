@@ -147,7 +147,7 @@ export default function GuidesPage() {
             }
 
             setBookingId(data._id);
-            setBookingStep("payment");
+            setBookingStep("success");
         } catch (err: any) {
             console.error("Booking failed:", err);
             setError(err.message || "Failed to create booking");
@@ -411,7 +411,7 @@ export default function GuidesPage() {
                                             disabled={isSubmitting}
                                             className="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-colors flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed mt-4"
                                         >
-                                            {isSubmitting ? "Initiating..." : "Confirm & Proceed to Payment"} <ChevronRight className="w-4 h-4" />
+                                            {isSubmitting ? "Sending Request..." : "Request Booking"} <ChevronRight className="w-4 h-4" />
                                         </button>
                                     </div>
                                 )}
@@ -488,9 +488,9 @@ export default function GuidesPage() {
                                         >
                                             <CheckCircle className="w-12 h-12 text-green-500" />
                                         </motion.div>
-                                        <h3 className="text-3xl font-bold text-white mb-2 font-mono">Payment Successful!</h3>
+                                        <h3 className="text-3xl font-bold text-white mb-2 font-mono">Request Sent!</h3>
                                         <p className="text-gray-400 mb-8 max-w-[280px] mx-auto text-sm leading-relaxed">
-                                            Your trip with <strong>{selectedGuide.name}</strong> is now confirmed. You can find your booking in the dashboard.
+                                            Your booking request to <strong>{selectedGuide.name}</strong> has been sent. Please wait for the guide to accept your request. You can check the status in your dashboard.
                                         </p>
                                         <div className="flex flex-col gap-3">
                                             <button
