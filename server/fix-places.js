@@ -16,7 +16,7 @@ try {
 
 const Place = require('./models/Place');
 
-mongoose.connect("mongodb+srv://rohitmnaik:dragoon@cluster0.itxhbzd.mongodb.net/travelmate?retryWrites=true&w=majority")
+mongoose.connect(process.env.MONGODB_URI)
     .then(async () => {
         console.log('Connected to MongoDB');
 

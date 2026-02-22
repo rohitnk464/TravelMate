@@ -10,7 +10,7 @@ const Guide = require('./models/Guide');
 const PLACEHOLDER_PLACE_IMAGE = 'https://images.unsplash.com/photo-1506744626753-eda8151a74a0?q=80&w=1920&auto=format&fit=crop';
 const PLACEHOLDER_GUIDE_IMAGE = 'https://images.unsplash.com/photo-1544005313-94ddf0286df2?q=80&w=800&auto=format&fit=crop';
 
-mongoose.connect('mongodb+srv://rohitmnaik:dragoon@cluster0.itxhbzd.mongodb.net/travelmate?retryWrites=true&w=majority')
+mongoose.connect(process.env.MONGODB_URI)
     .then(async () => {
         console.log('Connected to MongoDB');
 
