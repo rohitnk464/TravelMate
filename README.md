@@ -1,218 +1,172 @@
----
 
-# 🌍 TravelMate — AI-Powered Local Travel & Safety Platform
-Smart Travel Companion with AI Planning, Verified Local Guides & Real-Time Safety System
+# 🌍 TravelMate
 
----
+## AI Travel Companion with Real-Time Safety and Guide Booking
 
-## 🚀 Live Deployment
+<p align="center">
+  <strong>Travel Fearlessly. Explore Locally. Stay Protected.</strong>
+</p>
 
-* 🌐 **Frontend (Vercel):** [https://travel-mate-seven-nu.vercel.app](https://travel-mate-seven-nu.vercel.app)
-* ⚙️ **Backend:** Deployed on Render Cloud  (https://travelmate-hxlu.onrender.com)
-* 🗂 **Monorepo Structure:** `client/` + `server/`
-
----
-
-## 📌 Overview
-
-TravelMate is a full-stack AI-powered travel platform designed to help users explore new cities **safely, intelligently, and efficiently**.
-
-It combines:
-
-* 🧠 AI-based day planning
-* 👨‍🏫 Verified local guide booking
-* 📡 Real-time safety alerts
-* 🚨 SOS emergency system
-* 📊 Admin monitoring dashboard
-* 🔐 Multi-role authentication
-
-The platform focuses on **safe, personalized, and intelligent urban exploration**.
+<p align="center">
+  <img src="https://img.shields.io/badge/Next.js-App%20Router-black?logo=nextdotjs" />
+  <img src="https://img.shields.io/badge/Node.js-Express-green?logo=node.js" />
+  <img src="https://img.shields.io/badge/MongoDB-Atlas-brightgreen?logo=mongodb" />
+  <img src="https://img.shields.io/badge/JWT-Authentication-blue" />
+  <img src="https://img.shields.io/badge/Cloud-Vercel%20%7C%20Render-black" />
+  <img src="https://img.shields.io/badge/License-MIT-yellow" />
+</p>
 
 ---
 
-# 🎯 Key Features
+# 🚀 Live Application & Demo
+
+<p align="center">
+  <a href="https://travel-mate-seven-nu.vercel.app">
+    <img src="https://img.shields.io/badge/🌐%20Live%20Frontend-Visit%20Now-black?style=for-the-badge&logo=vercel" />
+  </a>
+  &nbsp;
+  <a href="https://travelmate-hxlu.onrender.com">
+    <img src="https://img.shields.io/badge/⚙%20Live%20Backend-API%20Server-blue?style=for-the-badge&logo=render" />
+  </a>
+  &nbsp;
+  <a href="https://youtu.be/upyh9s10a0Y">
+    <img src="https://img.shields.io/badge/▶%20Watch%20Full%20Demo-YouTube-red?style=for-the-badge&logo=youtube" />
+  </a>
+</p>
 
 ---
 
-## 👤 Multi-Role Authentication System
+## 🌐 Frontend
 
-The platform supports three distinct user roles:
+[https://travel-mate-seven-nu.vercel.app](https://travel-mate-seven-nu.vercel.app)
 
-### 1️⃣ Traveler Login
+## ⚙ Backend API
 
-* Explore destinations
-* AI “Plan My Day” feature
-* Book verified guides
-* Real-time chat with guide
-* Safety tools (SOS, fake call, siren)
-* Booking history & ratings
+[https://travelmate-hxlu.onrender.com](https://travelmate-hxlu.onrender.com)
 
----
+## 🎥 Demo Video
 
-### 2️⃣ Guide Login
-
-* Accept / Reject bookings
-* View pending & completed sessions
-* Earnings dashboard
-* Availability management
-* Real-time chat with travelers
-* Profile & pricing management
+[https://youtu.be/upyh9s10a0Y](https://youtu.be/upyh9s10a0Y)
 
 ---
 
-### 3️⃣ Admin Login
+# ✨ Project Overview
 
-* Approve / Reject guide registrations
-* Monitor active users
-* View safety alerts
-* Manage destinations & places
-* Analytics dashboard
-* System health monitoring
+**TravelMate** is a full-stack SaaS travel platform that integrates:
 
----
+* 🧠 AI-powered itinerary planning
+* 🛡 Real-time emergency safety tools
+* 🌍 Verified local guide marketplace
+* 📊 Production-grade admin analytics
 
-# 🧠 AI Travel Orchestrator
-
-AI Companion provides:
-
-* ✨ “Plan My Day” itinerary generation
-* 🍽 Restaurant recommendations
-* 🏛 Tourist attraction suggestions
-* 🗓 Timeline-based structured planning
-* 🌍 Personalized city recommendations
-* 📍 Location-based exploration
+Unlike traditional travel applications, TravelMate embeds safety, AI intelligence, and booking infrastructure directly into the core product architecture.
 
 ---
 
-# 📍 Smart Location System
+# 🎯 Core Features
 
-* Destination-based search
-* Auto-detect user location (Geolocation API)
-* Nearby places suggestions
-* Map integration (Leaflet + OpenStreetMap)
-* Booking conflict detection
+## 🧠 AI Travel Engine
 
-If a guide is already booked at selected date & time →
-❌ **“Guide is Occupied”** message is displayed
+* Timeline-based daily planning
+* Smart location-based recommendations
+* Attraction & restaurant suggestions
+* Personalized trip structuring
 
----
+## 🌍 Guide Marketplace
 
-# 🛡 Safety & Emergency System
+* Book verified local guides
+* Accept / reject booking requests
+* Ratings & review system
+* Earnings tracking dashboard
 
-TravelMate includes advanced safety mechanisms:
+## 🛡 Real-Time Safety System
 
-* 🚨 SOS Emergency Button
-* 🔊 Loud Siren Activation
-* 📞 Fake Call Simulation
-* 🚓 Nearby Police Lookup
-* 📡 Real-time admin alert monitoring
-* 📍 Location-based safety tracking
+* 🚨 Instant SOS trigger
+* 📍 Live geo-location tracking
+* 📞 Fake call simulation
+* 🔊 Emergency siren activation
+* 🚓 Nearby police lookup
+* 📡 Admin monitoring dashboard
 
-Admin dashboard displays:
+## 📊 Admin SaaS Analytics
 
-* Active Alerts
-* User Coordinates
-* Real-time acknowledgment
-
----
-
-# 📊 Admin Analytics Dashboard
-
-Includes:
-
-* ✅ Total Bookings
-* 💰 Revenue Generated
-* 🌍 Most Booked City
-* 🏆 Top Performing Guide
-* ❌ Cancellation Rate
-* 📈 User Activity Trends
-* 📡 Active Safety Alerts
+* Total bookings overview
+* Revenue generated
+* Cancellation rate
+* Most booked cities
+* Top performing guides
+* Active emergency alerts
 
 ---
 
-# 💼 Guide Earnings Dashboard
+# 👥 Multi-Role Architecture
 
-Each guide can view:
+TravelMate uses JWT authentication with role-based authorization middleware.
 
-* Total Bookings
-* Completed Sessions
-* Total Earnings
-* Upcoming Bookings
-* Cancellation Statistics
+### 🧳 Traveler
 
----
+* Plan trips using AI
+* Book guides
+* Use emergency tools
+* View booking history
 
-# 💬 Real-Time Communication
+### 🧑‍🏫 Guide
 
-* User ↔ Guide live chat
-* Instant booking updates
-* Real-time status changes
-* Notification system for:
+* Manage bookings
+* Set availability
+* Track earnings
+* Update profile & pricing
 
-  * New booking
-  * Booking accepted
-  * Booking rejected
-  * Safety alert triggered
+### 👨‍💼 Admin
 
----
-
-# 💳 Payment System (Demo Mode)
-
-Currently implemented as:
-
-* Simulated payment flow
-* Booking confirmation after mock payment
-* Architecture ready for **Stripe integration**
+* Approve guides
+* Monitor safety alerts
+* View analytics dashboard
+* Manage system data
 
 ---
 
-# 🏗 Tech Stack
+# 🏗 System Architecture
 
-## Frontend
+```
+Frontend (Next.js + Tailwind + Framer Motion)
+        ↓
+REST API (Node.js + Express)
+        ↓
+MongoDB Atlas (Cloud Database)
+        ↓
+JWT Authentication + Role Middleware
+        ↓
+Deployment (Vercel + Render)
+```
 
-* Next.js (App Router)
-* React
-* Tailwind CSS
-* Framer Motion
-* Leaflet + OpenStreetMap
-* Context API
-
-## Backend
-
-* Node.js
-* Express.js
-* MongoDB
-* JWT Authentication
-* REST APIs
-* Role-based Middleware
-
-## Deployment
-
-* Vercel (Frontend)
-* Render (Backend)
-* MongoDB Atlas (Database)
+Designed using scalable cloud-native layered architecture.
 
 ---
 
 # 📂 Project Structure
 
 ```
-TravelMate/
+travelmate/
 │
-├── client/       # Next.js Frontend
-│   ├── app/
-│   ├── components/
-│   ├── hooks/
-│   ├── context/
-│   └── lib/
+├── client/                         # Frontend
+│   ├── app/                        # App Router pages
+│   ├── components/                 # UI components
+│   ├── hooks/                      # Custom hooks
+│   ├── context/                    # Auth context
+│   ├── services/                   # API layer
+│   ├── utils/                      # Helper functions
+│   └── styles/
 │
-├── server/       # Express Backend
-│   ├── controllers/
-│   ├── models/
-│   ├── routes/
-│   ├── middleware/
-│   └── config/
+├── server/                         # Backend
+│   ├── controllers/                # Business logic
+│   ├── models/                     # MongoDB schemas
+│   ├── routes/                     # API routes
+│   ├── middleware/                 # Auth & role middleware
+│   ├── config/                     # Database config
+│   └── server.js                   # Entry point
 │
+├── assets/                         # README assets
 └── README.md
 ```
 
@@ -220,110 +174,93 @@ TravelMate/
 
 # 🔐 Environment Variables
 
-## Frontend (.env)
+Create a `.env` file inside `server/`
 
 ```
-NEXT_PUBLIC_API_URL=
-```
-
-## Backend (.env)
-
-```
-PORT=
-MONGO_URI=
-JWT_SECRET=
-CLIENT_URL=
+PORT=5000
+MONGO_URI=your_mongodb_connection_string
+JWT_SECRET=your_secret_key
+CLIENT_URL=http://localhost:3000
 ```
 
 ---
 
-# 📦 Installation & Setup
+# 🛠 Tech Stack
 
-## Clone Repository
+### Frontend
 
-```
-git clone https://github.com/your-username/travelmate.git
-cd travelmate
-```
+* Next.js (App Router)
+* React
+* Tailwind CSS
+* Framer Motion
+* Leaflet Maps
 
-## Setup Backend
+### Backend
 
-```
-cd server
-npm install
-npm run dev
-```
+* Node.js
+* Express.js
+* MongoDB Atlas
+* JWT Authentication
+* Role-Based Middleware
 
-## Setup Frontend
+### Deployment
 
-```
-cd client
-npm install
-npm run dev
-```
+* Vercel (Frontend)
+* Render (Backend)
+* MongoDB Atlas (Database)
 
 ---
 
-# 🧪 Demo Accounts (For Evaluation)
+# 🧪 Demo Credentials
 
-## 👨‍💼 Admin
+### 👨‍💼 Admin
 
-Email: [admin@travelmate.com]
+[admin@travelmate.com](mailto:admin@travelmate.com)
 Password: Admin@123
 
-## 🧑‍🏫 Guide
+### 🧑‍🏫 Guide
 
-Email: [r@gmail.com]
-Password:123456
+[aarav.mehta@travelmate.com](mailto:aarav.mehta@travelmate.com)
+Password: Aarav@123
 
-## 🧳 Traveler
+### 🧳 Traveler
 
-Email: [y@gmail.com]
-Password: 123456
-
----
-
-# 📈 System Workflow
-
-1. User registers as Traveler or Guide
-2. Guide requires Admin approval
-3. Traveler books guide
-4. Guide accepts/rejects
-5. Booking confirmed
-6. Payment simulated
-7. Session completed
-8. Rating & revenue updated
-9. Analytics dashboard updated
+[neha.kapoor@travelmate.com](mailto:neha.kapoor@travelmate.com)
+Password: Neha@123
 
 ---
 
-# 🔮 Future Enhancements
+Frontend → [http://localhost:3000](http://localhost:3000)
+Backend → [http://localhost:5000](http://localhost:5000)
 
-* Stripe Live Payment Integration
-* AI-powered personalized recommendations
-* Mobile App (React Native)
-* Real-time Socket.io notifications
+---
+
+# 🔮 Future Roadmap
+
+* Stripe payment integration
+* Real-time socket notifications
+* AI personalization v2
+* Risk-zone prediction model
+* React Native mobile application
 * Multi-language support
-* AI-based risk zone prediction
 
 ---
 
-# 🧑‍💻 Author
+# 👨‍💻 Author
 
 **Rohit M Naik**
 
-# 🏁 Conclusion
+---
 
-TravelMate demonstrates:
+# 🏁 Project Highlights
 
-* Full-stack development
-* Role-based authentication
-* Real-time safety systems
-* AI-powered itinerary planning
-* Admin analytics dashboards
-* Booking conflict resolution
-* Cloud deployment & SaaS architecture
+✔ Full-stack SaaS architecture
+✔ Secure multi-role authentication
+✔ AI-driven itinerary engine
+✔ Real-time safety infrastructure
+✔ Cloud-native deployment
 
-This project reflects **modern scalable SaaS architecture** and real-world engineering practices.
+---
+
 
 ---
