@@ -228,12 +228,6 @@ Password: Aarav@123
 [neha.kapoor@travelmate.com](mailto:neha.kapoor@travelmate.com)
 Password: Neha@123
 
----
-
-Frontend → [http://localhost:3000](http://localhost:3000)
-Backend → [http://localhost:5000](http://localhost:5000)
-
----
 
 # 🔮 Future Roadmap
 
@@ -262,5 +256,3 @@ Backend → [http://localhost:5000](http://localhost:5000)
 
 ---
 
-
----
